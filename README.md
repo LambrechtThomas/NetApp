@@ -1,8 +1,8 @@
-# Rise - [GROUPNAME]
+# Rise - [Thomas Lambrecht]
 
-## Team Members
+## Owner
 
-- [MEMBER1_NAME] - [MEMBER1_EMAIL] - [MEMBER1_GITHUB_USERNAME]
+- [Thomas Lambrecht] - [[Mail](thomas.lambrecht2@student.hogent.be)] - [[GitHub](https://github.com/LambrechtThomas)]
 
 ## Technologies & Packages Used
 
