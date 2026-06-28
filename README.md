@@ -2,8 +2,10 @@
 
 ## Owner
 Thomas Lambrecht - [Mail](thomas.lambrecht2@student.hogent.be) - [GitHub](https://github.com/LambrechtThomas)
+
 [OpsRepo](https://github.com/HOGENT-RISE/devops-project-operations-25-26-ep3-LambrechtThomas.git)
-[DevRepo] (***DevRepo is a clone from the Rise Project Template***)
+
+[DevRepo](https://github.com/LambrechtThomas/NetApp.git) (***DevRepo is a clone from the Rise Project Template***)
 
 ## Technologies & Packages Used
 
