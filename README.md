@@ -1,7 +1,7 @@
 # Rise - [Thomas Lambrecht]
 
 ## Owner
-Thomas Lambrecht - [Mail](mailto:thomas.lambrecht2@student.hogent.be) - [GitHub](https://github.com/LambrechtThomas) <br/>
+Thomas Lambrecht - <Thomas.Lambrecht2@student.hogent.be> - [GitHub](https://github.com/LambrechtThomas) <br/>
 [OpsRepo](https://github.com/HOGENT-RISE/devops-project-operations-25-26-ep3-LambrechtThomas.git) (***Most of the project is situated here***)<br/>
 [DevRepo](https://github.com/LambrechtThomas/NetApp.git) (***DevRepo is a clone from the Rise Project Template***)
 
