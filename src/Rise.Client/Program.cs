@@ -32,13 +32,21 @@ try
     // register the account management interface
     builder.Services.AddScoped(sp => (IAccountManager)sp.GetRequiredService<AuthenticationStateProvider>());
 
+    // This is a hosted Blazor WASM app - Rise.Server serves both the API and
+    // these WASM files, so the backend is always same-origin as wherever the
+    // browser loaded this app from. HostEnvironment.BaseAddress reflects that
+    // automatically (dev, local Vagrant, cloud - no per-environment config
+    // needed). `BackendUrl`, if explicitly set, still overrides it for the
+    // rare case the backend genuinely lives elsewhere.
+    var backendUrl = builder.Configuration["BackendUrl"] ?? builder.HostEnvironment.BaseAddress;
+
     // configure client for auth interactions
-    builder.Services.AddHttpClient("SecureApi", opt => opt.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001"))
+    builder.Services.AddHttpClient("SecureApi", opt => opt.BaseAddress = new Uri(backendUrl))
         .AddHttpMessageHandler<CookieHandler>();
 
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
     {
-        client.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
+        client.BaseAddress = new Uri(backendUrl);
     });
 
     await builder.Build().RunAsync();
