@@ -22,11 +22,11 @@ public class Info(UserManager<IdentityUser> userManager) : EndpointWithoutReques
         {
             return Result.NotFound();
         }
-        
-        return Result.Success(await CreateInfoResponseAsync(user,HttpContext.User));       
+
+        return Result.Success(await CreateInfoResponseAsync(user, HttpContext.User));
     }
-    
-    private async Task<AccountResponse.Info> CreateInfoResponseAsync(IdentityUser user,ClaimsPrincipal claimsPrincipal)
+
+    private async Task<AccountResponse.Info> CreateInfoResponseAsync(IdentityUser user, ClaimsPrincipal claimsPrincipal)
     {
         return new()
         {

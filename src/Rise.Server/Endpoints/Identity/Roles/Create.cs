@@ -19,9 +19,9 @@ public class Create(RoleManager<IdentityRole> roleManager) : Endpoint<RoleReques
 
     public override async Task<Result<string>> ExecuteAsync(RoleRequest.Create req, CancellationToken ctx)
     {
-        if(await roleManager.RoleExistsAsync(req.Name))
+        if (await roleManager.RoleExistsAsync(req.Name))
             return Result.Conflict($"Role with name '{req.Name}' already exists.");
-        
+
         IdentityRole role = new()
         {
             Name = req.Name,
@@ -29,10 +29,10 @@ public class Create(RoleManager<IdentityRole> roleManager) : Endpoint<RoleReques
         };
 
         var result = await roleManager.CreateAsync(role);
-        
-        if(!result.Succeeded)
+
+        if (!result.Succeeded)
             return Result.Error(result.Errors.First().Description);
-        
+
         return Result.Created(role.Id);
     }
 }

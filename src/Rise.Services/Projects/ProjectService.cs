@@ -25,8 +25,8 @@ public class ProjectService(ApplicationDbContext dbContext, ISessionContextProvi
         // Currently logged-in user must be the same as the project's technician.
         var loggedInTechnician = await dbContext.Technicians
             .SingleOrDefaultAsync(x => x.AccountId == sessionContextProvider.User!.GetUserId(), ctx);
-        
-        if(loggedInTechnician is null || !project.CanBeEditedBy(loggedInTechnician))
+
+        if (loggedInTechnician is null || !project.CanBeEditedBy(loggedInTechnician))
             return Result.Unauthorized("You are not authorized to edit this project.");
 
         project.Edit(req.Name);

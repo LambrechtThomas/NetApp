@@ -25,7 +25,7 @@ public class Project : Entity
     /// </summary>
     private Project()
     {
-        
+
     }
 
     public Project(string name, Technician technician, Address location)
@@ -42,6 +42,6 @@ public class Project : Entity
 
     public void Edit(string name)
     {
-        Name = Guard.Against.NullOrEmpty(name);       
+        Name = Guard.Against.NullOrEmpty(name);
     }
 }

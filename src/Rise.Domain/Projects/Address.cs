@@ -6,9 +6,9 @@ namespace Rise.Domain.Projects;
 /// </summary>
 public class Address : ValueObject
 {
-    public string Addressline1 { get; }  = default!;
-    public string Addressline2 { get; }  = default!;
-    public string City { get; }  = default!;
+    public string Addressline1 { get; } = default!;
+    public string Addressline2 { get; } = default!;
+    public string City { get; } = default!;
     public string PostalCode { get; } = default!;
 
     /// <summary>
@@ -16,7 +16,7 @@ public class Address : ValueObject
     /// </summary>
     private Address()
     {
-        
+
     }
 
     public Address(string addressline1, string addressline2, string city, string zipCode)

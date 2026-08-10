@@ -22,7 +22,7 @@ internal class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> 
         // UpdatedAt should be filled in by the database when using raw SQL.
         builder.Property(e => e.UpdatedAt)
             .HasDefaultValueSql("CURRENT_TIMESTAMP"); // SQLite specific, so change this when moving to another database provider.
-        
+
         // IsDeleted should be false by default, used for softdelete.
         builder.Property(e => e.IsDeleted)
             .HasDefaultValue(false);

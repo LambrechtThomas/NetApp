@@ -25,17 +25,17 @@ public class IndexWithMockExampleShould : TestContext
     {
         // Authenticate as a test user for this specific test.
         this.AddTestAuthorization().SetAuthorized("TEST USER");
-        
+
         // Mock
         var products = Enumerable.Range(1, 5)
-                         .Select(i => new ProductDto.Index() { Id = i, Name = $"Product {i}", Description = $"Description {i}"  });
-    
+                         .Select(i => new ProductDto.Index() { Id = i, Name = $"Product {i}", Description = $"Description {i}" });
+
         var wrapper = new ProductResponse.Index
         {
             Products = products,
             TotalCount = 5,
         };
-        
+
         var productServiceMock = Substitute.For<IProductService>();
         // Any is that we don't care about the incoming parameters. We can specify them for a specific case, but this is fine for this test.
         productServiceMock.GetIndexAsync(Arg.Any<QueryRequest.SkipTake>()).Returns(Task.FromResult(Result.Success(wrapper)));

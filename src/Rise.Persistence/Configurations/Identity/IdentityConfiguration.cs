@@ -23,7 +23,7 @@ internal class IdentityConfiguration :
     //     builder.ToTable("Users", "auth");
     // However, be aware that SQLite does NOT support schemas, so this only works with SQL Server, MarioDB, PostgreSQL,...
     // The default below will work on any provider.
-    
+
     public void Configure(EntityTypeBuilder<IdentityUser> builder)
         => builder.ToTable("Users");
 

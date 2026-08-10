@@ -22,7 +22,7 @@ public abstract class Entity
     /// </summary>
     public bool IsDeleted { get; set; }
 
-    protected Entity() {}
+    protected Entity() { }
 
     protected Entity(int id)
     {

@@ -12,7 +12,7 @@ public class Index(IProductService productService) : Endpoint<QueryRequest.SkipT
     public override void Configure()
     {
         Get("/api/products");
-        AllowAnonymous(); 
+        AllowAnonymous();
     }
 
     public override Task<Result<ProductResponse.Index>> ExecuteAsync(QueryRequest.SkipTake req, CancellationToken ct)

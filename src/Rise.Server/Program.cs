@@ -1,5 +1,6 @@
 using Destructurama;
 using FastEndpoints.Swagger;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
@@ -24,13 +25,20 @@ try
     builder.Services
         .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration) // Configuration in AppSettings.json
             .Destructure.UsingAttributes()) // Sensitive data logging
-        .AddIdentity<IdentityUser, IdentityRole>() 
+        .AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .Services.AddDbContext<ApplicationDbContext>(o =>
         {
             var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection") ??
                                    throw new InvalidOperationException("Connection string 'DatabaseConnection' not found.");
-            o.UseSqlite(connectionString); // Swap Sqlite for your database provider (e.g. Sql Server, MySQL, PostgreSQL, etc.).
+            if (builder.Environment.IsDevelopment())
+            {
+                o.UseSqlite(connectionString); // Local dev only - zero-setup file database.
+            }
+            else
+            {
+                o.UseSqlServer(connectionString); // Deployed environments (local Vagrant appserver, cloud) target SQL Server.
+            }
             o.EnableDetailedErrors();
             if (builder.Environment.IsDevelopment())
             {
@@ -70,21 +78,41 @@ try
         });
 
     var app = builder.Build();
-    // apply Database migraticons on startup, not so wise in production (Use Generated SQL Scripts) 
+    // apply Database migraticons on startup, not so wise in production (Use Generated SQL Scripts)
     // See: https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli
-    if (app.Environment.IsDevelopment())
+    using (var scope = app.Services.CreateScope())
     {
-        using (var scope = app.Services.CreateScope())
-        {
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-            // dbContext.Database.EnsureDeleted(); // Delete the database if it exists to clean it up if needed.
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+        // dbContext.Database.EnsureDeleted(); // Delete the database if it exists to clean it up if needed.
 
-            dbContext.Database.Migrate(); // Creates the database if it doesn't exist and applies all migrations. See Readme.md for more info.
-            await dbSeeder.SeedAsync(); // Seeds the database with some test data.
+        if (app.Environment.IsDevelopment())
+        {
+            dbContext.Database.EnsureCreated(); // SQLite has no versioned migration set - just create the schema from the current model.
         }
+        else
+        {
+            dbContext.Database.Migrate(); // SQL Server - applies the versioned migrations. Creates the database if it doesn't exist.
+        }
+        await dbSeeder.SeedAsync(); // Seeds the database with some test data. Idempotent - safe to run on every startup.
     }
     // Theses middlewares are strict in order of calling!
+    if (!app.Environment.IsDevelopment())
+    {
+        // Deployed environments sit behind nginx, which terminates TLS and
+        // proxies plain HTTP to Kestrel on loopback. Without this, Kestrel
+        // sees every request as HTTP and UseHttpsRedirection() below would
+        // redirect right back to itself. nginx runs on this same host, so
+        // trusting its X-Forwarded-* headers unconditionally is safe here.
+        var forwardedHeadersOptions = new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        };
+        forwardedHeadersOptions.KnownNetworks.Clear();
+        forwardedHeadersOptions.KnownProxies.Clear();
+        app.UseForwardedHeaders(forwardedHeadersOptions);
+    }
+
     app.UseHttpsRedirection()
         .UseBlazorFrameworkFiles() // Blazor is also served from the API. 
         .UseStaticFiles()

@@ -9,5 +9,5 @@ namespace Rise.Services.Identity;
 /// </summary>
 public interface ISessionContextProvider
 {
-    ClaimsPrincipal? User { get; } 
+    ClaimsPrincipal? User { get; }
 }

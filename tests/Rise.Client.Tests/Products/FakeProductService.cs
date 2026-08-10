@@ -24,7 +24,7 @@ public class FakeProductService : IProductService
             Products = products,
             TotalCount = 5,
         };
-        
+
         return Task.FromResult(Result.Success(wrapper));
     }
 }

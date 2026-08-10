@@ -14,18 +14,18 @@ public class IndexShould : TestContext
     public IndexShould(ITestOutputHelper outputHelper)
     {
         Services.AddXunitLogger(outputHelper);
-		Services.AddScoped<IProductService, FakeProductService>(); // Use our own Faker
-		// Authenticate as a test user for all the tests in this class
-		// Can also be done on the test level.
-		this.AddTestAuthorization().SetAuthorized("TEST USER");
+        Services.AddScoped<IProductService, FakeProductService>(); // Use our own Faker
+                                                                   // Authenticate as a test user for all the tests in this class
+                                                                   // Can also be done on the test level.
+        this.AddTestAuthorization().SetAuthorized("TEST USER");
     }
 
     [Fact]
-	public void ShowsProducts()
-	{
+    public void ShowsProducts()
+    {
 
-		
-		var cut = RenderComponent<Index>();
-		cut.FindAll("table tbody tr").Count.ShouldBe(5);
-	}
+
+        var cut = RenderComponent<Index>();
+        cut.FindAll("table tbody tr").Count.ShouldBe(5);
+    }
 }

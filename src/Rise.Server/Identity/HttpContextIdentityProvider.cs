@@ -9,7 +9,7 @@ namespace Rise.Server.Identity;
 /// <see cref="ISessionContextProvider"/>
 /// </summary>
 /// <param name="httpContextAccessor"></param>
-public class HttpContextSessionProvider(IHttpContextAccessor httpContextAccessor) : ISessionContextProvider 
-{ 
-    public ClaimsPrincipal? User => httpContextAccessor!.HttpContext?.User; 
-} 
+public class HttpContextSessionProvider(IHttpContextAccessor httpContextAccessor) : ISessionContextProvider
+{
+    public ClaimsPrincipal? User => httpContextAccessor!.HttpContext?.User;
+}

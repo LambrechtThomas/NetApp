@@ -25,11 +25,11 @@ public class ProductService(ApplicationDbContext dbContext) : IProductService
             Name = request.Name!,
             Description = request.Description!
         };
-        
+
         dbContext.Products.Add(p);
-        
+
         await dbContext.SaveChangesAsync(ctx);
-        
+
         return Result.Created(new ProductResponse.Create
         {
             ProductId = p.Id,

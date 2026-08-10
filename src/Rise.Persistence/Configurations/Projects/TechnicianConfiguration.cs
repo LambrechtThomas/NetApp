@@ -16,7 +16,7 @@ internal class TechnicianConfiguration : EntityConfiguration<Technician>
         builder.Property(x => x.LastName).IsRequired().HasMaxLength(100);
         builder.Property(x => x.AccountId).IsRequired().HasMaxLength(36);
         builder.HasIndex(x => x.AccountId).IsUnique();
-        
+
         // See https://hogent-web.github.io/csharp/chapters/09/slides/index.html#1 for more information.
         // Other Technician configuration here.
     }

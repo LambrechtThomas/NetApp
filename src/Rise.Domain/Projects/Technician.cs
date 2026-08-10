@@ -23,6 +23,6 @@ public class Technician : Entity
         LastName = Guard.Against.NullOrEmpty(lastName);
         AccountId = Guard.Against.NullOrEmpty(accountId);
     }
-    
-    
+
+
 }

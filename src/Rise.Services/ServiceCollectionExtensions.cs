@@ -11,10 +11,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddScoped<IProductService, ProductService>();        
-        services.AddScoped<IProjectService, ProjectService>();        
-        services.AddTransient<DbSeeder>();       
-        
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IProjectService, ProjectService>();
+        services.AddTransient<DbSeeder>();
+
         // Add other application services here.
         return services;
     }

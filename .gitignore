@@ -17,3 +17,5 @@ src/Rise.Server/Rise.db
 src/Rise.Server/Rise.db-shm
 
 src/Rise.Server/Rise.db-wal
+NetApp.code-workspace
+TestResults/

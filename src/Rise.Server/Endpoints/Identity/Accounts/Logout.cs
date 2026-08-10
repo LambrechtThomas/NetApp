@@ -17,6 +17,6 @@ public class Logout(SignInManager<IdentityUser> signInManager) : EndpointWithout
     public override async Task<Result> HandleAsync(CancellationToken ct)
     {
         await signInManager.SignOutAsync();
-        return Result.NoContent();       
+        return Result.NoContent();
     }
 }

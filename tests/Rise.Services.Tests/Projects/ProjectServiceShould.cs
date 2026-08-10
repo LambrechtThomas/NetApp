@@ -11,7 +11,7 @@ namespace Rise.Services.Tests.Projects;
 
 public class ProjectServiceShould
 {
-    
+
     [Fact]
     public async Task EditProjectWhenTechnicianIsTheSame()
     {
@@ -19,7 +19,7 @@ public class ProjectServiceShould
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: nameof(EditProjectWhenTechnicianIsTheSame)) // Do NOT use InMemoryDatabase... it's not reliable. Use a real database and come up with a strategy to clean up the database between tests.
             .Options;
-        
+
         using var dbContext = new ApplicationDbContext(options);
 
         var technicianAccountId = Guid.NewGuid().ToString();
@@ -52,7 +52,7 @@ public class ProjectServiceShould
         var updatedProject = await dbContext.Projects.FirstAsync();
         updatedProject.Name.ShouldBe("New Project");
     }
-    
+
     [Fact]
     public async Task NotEditProjectWhenTechnicianIsDifferent()
     {
@@ -60,7 +60,7 @@ public class ProjectServiceShould
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: nameof(NotEditProjectWhenTechnicianIsDifferent)) // Do NOT use InMemoryDatabase... it's not reliable. Use a real database and come up with a strategy to clean up the database between tests.
             .Options;
-        
+
         using var dbContext = new ApplicationDbContext(options);
 
         var correctTechAccountId = Guid.NewGuid().ToString();
