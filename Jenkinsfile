@@ -45,7 +45,21 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh "dotnet publish src/Rise.Server/Rise.Server.csproj --configuration Release --no-self-contained -o ${env.PUBLISH_DIR}"
+                // Safety net: confirms the Blazor WASM client's (Rise.Client,
+                // referenced by Rise.Server) workload packs are aligned for
+                // this specific project. Needs root to write into
+                // /usr/share/dotnet if anything is out of sync - see the
+                // buildserver Ansible role for the narrow sudo grant.
+                sh 'sudo dotnet workload restore src/Rise.Client/Rise.Client.csproj'
+                // No --no-self-contained: it's redundant (framework-dependent
+                // is already the default with no RuntimeIdentifier set) and
+                // actively harmful - it propagates SelfContained=false down
+                // into Rise.Client's own build, and the WASM SDK's runtime
+                // pack resolution then comes back empty (WASM0005: Unable to
+                // resolve WebAssembly runtime pack version), even though the
+                // packs themselves are correctly installed. Confirmed by
+                // testing the exact same publish with/without this flag.
+                sh "dotnet publish src/Rise.Server/Rise.Server.csproj --configuration Release -o ${env.PUBLISH_DIR}"
                 sshagent(["deploy-ssh-key"]) {
                     sh """
                         rsync -az --delete -e 'ssh -o StrictHostKeyChecking=no' ${env.PUBLISH_DIR}/ ${env.APP_DEPLOY_USER}@${env.APP_SERVER_HOST}:${env.APP_DIR}/
